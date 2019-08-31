@@ -26,7 +26,7 @@ public class GadgetController {
         actor = new GadgetActor(gadget);
         gameController.getLeftPanel().addActor(actor);
 
-        gadget = new Gadget(GadgetTypes.TWO, 4, 2);
+        gadget = new Gadget(GadgetTypes.TWO, 4, 3);
         actor = new GadgetActor(gadget);
         gameController.getLeftPanel().addActor(actor);
 
