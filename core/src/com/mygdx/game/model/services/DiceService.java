@@ -7,10 +7,19 @@ import com.mygdx.game.model.entities.Dice;
 import com.mygdx.game.model.entities.Usable;
 
 public class DiceService {
-    public DiceService() {
+    private static DiceService instance = null;
+
+    private DiceService() {
         DiceRules.init();
         DiceActions.init();
         PanTypes.init();
+    }
+
+    public static DiceService getInstance() {
+        if (instance == null) {
+            instance = new DiceService();
+        }
+        return instance;
     }
 
     public boolean isUsable(Dice dice, Usable usable) {

@@ -1,67 +1,67 @@
 {
-BitmapFont: {
-	TooneyNoodle: {
-		file: TooneyNoodleNF.fnt
+	BitmapFont: {
+		TooneyNoodle: {
+			file: TooneyNoodleNF.fnt
+		}
 	}
-}
-Color: {
-	BackgroundColor: {
-		r: 0.7612881
-		g: 0.9999998
-		b: 0.65666676
-		a: 1
+	Color: {
+		BackgroundColor: {
+			r: 0.7612881
+			g: 0.9999998
+			b: 0.65666676
+			a: 1
+		}
+		GREY: {
+			r: 0.3466667
+			g: 0.34088892
+			b: 0.34088892
+			a: 1
+		}
+		Black: {
+			r: 0
+			g: 0
+			b: 0
+			a: 1
+		}
 	}
-	GREY: {
-		r: 0.3466667
-		g: 0.34088892
-		b: 0.34088892
-		a: 1
+	com.mygdx.game.view.actors.GadgetActor$Style: {
+		default: {
+			background: roundBox
+		}
 	}
-	Black: {
-		r: 0
-		g: 0
-		b: 0
-		a: 1
+	com.mygdx.game.view.actors.AbstractDiceActor$Style: {
+		default: {
+			background: dice-background
+			border: dice-border
+			size: 60
+		}
 	}
-}
-com.mygdx.game.view.actors.GadgetActor$Style: {
-	default: {
-		background: roundBox
+	com.mygdx.game.view.actors.DiceActor$Style: {
+		default: {
+			dicePrefix: dice-dot-
+			contentColor: Black
+		}
 	}
-}
-com.mygdx.game.view.actors.AbstractDiceActor$Style: {
-	default: {
-		background: dice-background
-		border: dice-border
-		size: 60
+	com.mygdx.game.view.actors.TheShaker$Style: {
+		default: {
+			background: shaker
+		}
 	}
-}
-com.mygdx.game.view.actors.DiceActor$Style: {
-	default: {
-		dicePrefix: dice-dot-
-		contentColor: Black
+	com.mygdx.game.view.actors.DiceSpotActor$Style: {
+		default: {
+			offsetY: 8
+			paddingX: 20
+			paddingY: 35
+		}
 	}
-}
-com.mygdx.game.view.actors.TheShaker$Style: {
-	default: {
-		background: shaker
+	LabelStyle: {
+		default: {
+			font: TooneyNoodle
+		}
 	}
-}
-com.mygdx.game.view.actors.DiceSpotActor$Style: {
-	default: {
-		offsetY: 8
-		paddingX: 20
-		paddingY: 35
+	TextTooltipStyle: {
+		default: {
+			label: default
+		}
 	}
-}
-LabelStyle: {
-	default: {
-		font: TooneyNoodle
-	}
-}
-TextTooltipStyle: {
-	default: {
-		label: default
-	}
-}
 }

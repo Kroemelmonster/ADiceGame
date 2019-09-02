@@ -2,43 +2,56 @@ package com.mygdx.game.view.actors;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Align;
-import com.mygdx.game.DependencyInjection;
 import com.mygdx.game.model.entities.DiceSpot;
 import com.mygdx.game.view.services.RenderService;
 
+import java.util.Optional;
+
 public class DiceSpotActor extends AbstractDiceActor {
     private static Style style;
-    private Label content;
-    private RenderService renderService = DependencyInjection.getRenderService();
+    protected DiceSpot spot;
+    private Optional<DiceSpotTypeActor> content;
 
     public DiceSpotActor(DiceSpot spot) {
         super();
         createStyle();
-        Skin skin = renderService.getSkin();
+        this.spot = spot;
 
-        this.border.setColor(Color.BLACK);
+        border.setColor(Color.BLACK);
 
-        this.content = new Label(Integer.toString((int) Math.abs(Math.random() * 10)), skin);
-        content.setColor(Color.BLACK);
-        content.setBounds(0, 15, this.getWidth(), this.getHeight());
-        content.setAlignment(Align.center);
-        this.addActor(this.content);
+        content = DiceSpotTypeActorBuilder.create(this);
+        content.ifPresent(diceSpotTypeActor -> addActor(diceSpotTypeActor.getActor()));
 
-        this.setColor(1, 1, 1, 0.2F);
+        setColor(1, 1, 1, 0.2F);
 
 
-        this.setPosition(spot.getX() * getWidthWithPadding() + style.paddingX / 2, spot.getY() * getHeightWithPadding() + style.offsetY);
+        int align = spot.getAlign();
+        float x = spot.getX() * getWidthWithPadding();
+        if (Align.isLeft(align)) {
+            x += 2;
+        } else if (Align.isRight(align)) {
+            x += style.paddingX - 2;
+        } else {
+            x += style.paddingX / 2;
+        }
+
+        float y = spot.getY() * getHeightWithPadding();
+        y += style.offsetY;
+        if (Align.isTop(align)) {
+            y += style.paddingY / 2 - 2;
+        } else if (Align.isBottom(align)) {
+            y -= style.paddingY / 2 - 2;
+        }
+
+        setPosition(x, y);
 
         //this.content.setColor(style.contentColor);
     }
 
     private static void createStyle() {
-        RenderService renderService = DependencyInjection.getRenderService();
         if (style == null) {
-            style = renderService.getSkin().get(Style.class);
+            style = RenderService.getInstance().getSkin().get(Style.class);
         }
     }
 
@@ -55,11 +68,11 @@ public class DiceSpotActor extends AbstractDiceActor {
     }
 
     public float getWidthWithPadding() {
-        return this.getWidth() + style.paddingX;
+        return getWidth() + style.paddingX;
     }
 
     public float getHeightWithPadding() {
-        return this.getHeight() + style.paddingY;
+        return getHeight() + style.paddingY;
     }
 
     public Vector2 getPosition() {

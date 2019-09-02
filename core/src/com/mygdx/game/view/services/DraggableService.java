@@ -1,7 +1,6 @@
 package com.mygdx.game.view.services;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.mygdx.game.DependencyInjection;
 import com.mygdx.game.model.services.DiceService;
 import com.mygdx.game.view.actors.DiceActor;
 import com.mygdx.game.view.actors.UsableActor;
@@ -9,15 +8,13 @@ import com.mygdx.game.view.render.DraggableListener;
 import com.mygdx.game.view.render.DraggableListenerEvent;
 
 public class DraggableService {
-    private DraggableListenerEvent diceDraggableListenerEvent;
-    private CursorService cursorService = DependencyInjection.getCursorService();
-    private DiceService diceService = DependencyInjection.getDiceService();
+    private static DraggableService instance = null;
 
-    public DraggableService() {
+    private DraggableService() {
         diceDraggableListenerEvent = new DraggableListenerEvent() {
             @Override
             public void dragStart() {
-                cursorService.setCursor(CursorService.CursorType.drag);
+                CursorService.getInstance().setCursor(CursorService.CursorType.drag);
             }
 
             @Override
@@ -28,7 +25,7 @@ public class DraggableService {
                 DiceActor dice = (DiceActor) drag;
                 UsableActor usable = (UsableActor) over;
 
-                boolean isUsable = diceService.isUsable(dice.getDice(), usable.getUsable());
+                boolean isUsable = DiceService.getInstance().isUsable(dice.getDice(), usable.getUsable());
 
                 usable.enableDragOver(isUsable);
             }
@@ -45,7 +42,7 @@ public class DraggableService {
 
             @Override
             public boolean drop(Actor drag, Actor drop) {
-                cursorService.setCursor(CursorService.CursorType.cursor);
+                CursorService.getInstance().setCursor(CursorService.CursorType.cursor);
 
                 if (!(drop instanceof UsableActor)) {
                     return true;
@@ -53,9 +50,18 @@ public class DraggableService {
                 DiceActor dice = (DiceActor) drag;
                 UsableActor usable = (UsableActor) drop;
 
-                return diceService.useUsable(dice.getDice(), usable.getUsable());
+                return DiceService.getInstance().useUsable(dice.getDice(), usable.getUsable());
             }
         };
+    }
+
+    private DraggableListenerEvent diceDraggableListenerEvent;
+
+    public static DraggableService getInstance() {
+        if (instance == null) {
+            instance = new DraggableService();
+        }
+        return instance;
     }
 
     public void addDraggableDiceListener(DiceActor dice) {

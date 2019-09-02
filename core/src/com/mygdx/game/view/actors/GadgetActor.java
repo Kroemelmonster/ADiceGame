@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.mygdx.game.DependencyInjection;
 import com.mygdx.game.model.entities.DiceSpot;
 import com.mygdx.game.model.entities.Gadget;
 import com.mygdx.game.view.services.RenderService;
@@ -16,27 +15,27 @@ public class GadgetActor extends Group {
     private Image background;
     private List<DiceSpotActor> spots = new ArrayList<>();
 
-    private RenderService renderService = DependencyInjection.getRenderService();
+    public GadgetActor(TheGadgetGrid grid, Gadget gadget) {
+        Style style = RenderService.getInstance().getSkin().get(Style.class);
+        background = new Image(style.background);
+        addActor(background);
 
-    public GadgetActor(Gadget gadget) {
-        Style style = renderService.getSkin().get(Style.class);
-        this.background = new Image(style.background);
-        this.addActor(this.background);
-
-        int x = 0;
-        int y = 0;
         for (DiceSpot spot : gadget.getSpots()) {
             DiceSpotActor spotActor = new DiceSpotActor(spot);
-            this.addActor(spotActor);
-            this.spots.add(spotActor);
-
-            x = Math.max(x, spot.getX());
-            y = Math.max(y, spot.getY());
+            addActor(spotActor);
+            spots.add(spotActor);
         }
-        x++;
-        y++;
-        this.background.setBounds(0, 0, x * DiceSpotActor.getDiceWidth(), y * DiceSpotActor.getDiceHeight());
-        this.setPosition(gadget.getX() * DiceSpotActor.getDiceWidth(), (7 - gadget.getY() - y) * DiceSpotActor.getDiceHeight());
+
+        float diceWidth = DiceSpotActor.getDiceWidth();
+        float diceHeight = DiceSpotActor.getDiceHeight();
+        float height = gadget.getHeight() * diceHeight;
+        setBounds(
+                gadget.getCol() * diceWidth,
+                grid.getHeight() - gadget.getRow() * diceHeight - height,
+                gadget.getWidth() * diceWidth,
+                height
+        );
+        background.setBounds(2, 2, getWidth() - 4, getHeight() - 4);
     }
 
     public Vector2 getPositionOfIndex(int i) {

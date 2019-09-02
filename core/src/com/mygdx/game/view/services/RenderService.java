@@ -6,10 +6,21 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.mygdx.game.DependencyInjection;
 import lombok.Getter;
 
+//@Log
 public class RenderService {
+    private static RenderService instance = null;
+
+    private RenderService() {
+        FitViewport viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT, new OrthographicCamera());
+
+        this.stage = new Stage(viewport);
+
+        Gdx.input.setInputProcessor(stage);
+        this.skin = new Skin(Gdx.files.internal("skin.json"));
+    }
+
     public static final int SCREEN_WIDTH = 1000;
     public static final int SCREEN_HEIGHT = 700;
 
@@ -18,13 +29,12 @@ public class RenderService {
     @Getter
     private Skin skin;
 
-    public RenderService() {
-        FitViewport viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT, new OrthographicCamera());
-
-        this.stage = new Stage(viewport);
-
-        Gdx.input.setInputProcessor(stage);
-        this.skin = new Skin(Gdx.files.internal("skin.json"));
+    public static RenderService getInstance() {
+        if (instance == null) {
+            //log.log(Level.INFO, "RenderService instanced");
+            instance = new RenderService();
+        }
+        return instance;
     }
 
     public void render() {
@@ -40,7 +50,7 @@ public class RenderService {
     }
 
     public void dispose() {
-        DependencyInjection.getCursorService().dispose();
+        CursorService.getInstance().dispose();
         stage.dispose();
     }
 

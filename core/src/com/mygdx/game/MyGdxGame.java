@@ -1,14 +1,15 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.mygdx.game.controller.GameController;
 import com.mygdx.game.view.services.RenderService;
 
 public class MyGdxGame extends ApplicationAdapter {
     private RenderService renderService;
 
     public void create() {
-        DependencyInjection.init();
-        renderService = DependencyInjection.getRenderService();
+        renderService = RenderService.getInstance();
+        GameController.getInstance().startGame();
     }
 
     public void render() {

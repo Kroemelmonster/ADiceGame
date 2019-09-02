@@ -5,15 +5,24 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.google.common.collect.HashBiMap;
-import com.mygdx.game.DependencyInjection;
 import com.mygdx.game.model.entities.Dice;
 import com.mygdx.game.view.actions.ArcToAction;
 import com.mygdx.game.view.actors.DiceActor;
 
 public class DiceController {
-    private HashBiMap<Dice, DiceActor> diceMap = HashBiMap.create();
+    private static DiceController instance = null;
 
-    private GameController gameController = DependencyInjection.getGameController();
+    private DiceController() {
+    }
+
+    public static DiceController getInstance() {
+        if (instance == null) {
+            instance = new DiceController();
+        }
+        return instance;
+    }
+
+    private HashBiMap<Dice, DiceActor> diceMap = HashBiMap.create();
 
     public void updateDiceNumber(Dice dice) {
         DiceActor actor = diceMap.get(dice);
@@ -30,15 +39,17 @@ public class DiceController {
 
         diceMap.put(dice, diceActor);
 
-        gameController.getEffectPanel().addActor(diceActor);
-        Vector2 position = gameController.getTheShaker().getDiceStartPosition();
+        LayerController layerController = LayerController.getInstance();
+
+        layerController.getDiceLayer().addActor(diceActor);
+        Vector2 position = layerController.getTheShaker().getDiceStartPosition();
         diceActor.setCenterPosition(position.x, position.y);
 
         diceActor.setScale(0);
 
         ArcToAction arcToAction = new ArcToAction();
 
-        position = gameController.getTheDicePan().getPositionOfIndex(number);
+        position = layerController.getTheDicePan().getPositionOfIndex(number);
         arcToAction.setPosition(position.x, position.y);
         arcToAction.addPoint(new Vector2(0, 800), ArcToAction.BezierPoints.Anchor.start);
         arcToAction.setDuration(1F);

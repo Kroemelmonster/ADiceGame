@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
-import com.mygdx.game.DependencyInjection;
 import com.mygdx.game.view.services.RenderService;
 
 public abstract class AbstractDiceActor extends Group {
@@ -13,12 +12,11 @@ public abstract class AbstractDiceActor extends Group {
     protected Image border;
 
     private static Style style;
-    private RenderService renderService = DependencyInjection.getRenderService();
 
     public AbstractDiceActor() {
         super();
         createStyle();
-        Skin skin = renderService.getSkin();
+        Skin skin = RenderService.getInstance().getSkin();
         setWidth(style.size);
         setHeight(style.size);
         setOrigin(Align.center);
@@ -28,9 +26,8 @@ public abstract class AbstractDiceActor extends Group {
     }
 
     private static void createStyle() {
-        RenderService renderService = DependencyInjection.getRenderService();
         if (style == null) {
-            style = renderService.getSkin().get(Style.class);
+            style = RenderService.getInstance().getSkin().get(Style.class);
         }
     }
 

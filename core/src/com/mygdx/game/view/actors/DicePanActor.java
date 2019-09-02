@@ -5,32 +5,27 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Align;
-import com.mygdx.game.DependencyInjection;
 import com.mygdx.game.model.definitions.PanPlace;
-import com.mygdx.game.view.services.DraggableService;
 import com.mygdx.game.view.services.RenderService;
 
 public class DicePanActor extends AbstractDiceActor {
     private Style style;
     private Label content;
 
-    private DraggableService draggableService = DependencyInjection.getDraggableService();
-    private RenderService renderService = DependencyInjection.getRenderService();
-
     public DicePanActor(PanPlace place, int number) {
         super();
-        Skin skin = renderService.getSkin();
-        this.border.setColor(Color.BLACK);
+        Skin skin = RenderService.getInstance().getSkin();
+        border.setColor(Color.BLACK);
 
-        this.content = new Label(Integer.toString(number), skin);
+        content = new Label(Integer.toString(number), skin);
         content.setColor(Color.BLACK);
-        content.setBounds(0, 15, this.getWidth(), this.getHeight());
+        content.setBounds(0, 15, getWidth(), getHeight());
         content.setAlignment(Align.center);
-        this.addActor(this.content);
+        addActor(content);
 
-        this.setColor(1, 1, 1, 0.2F);
+        setColor(1, 1, 1, 0.2F);
 
-        this.setPosition(place.getX() * (this.getWidth() + 20), place.getY() * (this.getHeight() + 20));
+        setPosition(place.getX() * (getWidth() + 20), place.getY() * (getHeight() + 20));
 
         //this.content.setColor(style.contentColor);
     }

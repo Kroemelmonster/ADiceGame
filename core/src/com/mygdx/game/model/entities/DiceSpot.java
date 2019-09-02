@@ -8,14 +8,19 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class DiceSpot {
-    protected int x;
-    protected int y;
+    protected float x;
+    protected float y;
+    protected int align;
+    private Type type;
 
     private DiceRule diceRule;
-
     public DiceSpot(DiceSpot spot) {
         this.x = spot.x;
         this.y = spot.y;
+        this.align = spot.align;
         this.diceRule = spot.diceRule;
+        this.type = spot.type;
     }
+
+    public enum Type {NORMAL, DRAW}
 }
