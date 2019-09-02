@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
-import com.mygdx.game.view.services.RenderService;
+import com.mygdx.game.services.RenderService;
 
 public abstract class AbstractDiceActor extends Group {
     protected Image background;

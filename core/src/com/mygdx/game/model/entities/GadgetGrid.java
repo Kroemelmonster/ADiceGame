@@ -1,6 +1,8 @@
 package com.mygdx.game.model.entities;
 
-import com.mygdx.game.model.definitions.GadgetType;
+import com.mygdx.game.view.actors.TheGadgetGrid;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -10,6 +12,9 @@ public class GadgetGrid {
     private final int rows, columns;
     private final Gadget[][] grid;
     private final SortedSet<Gadget> sortedSet = new TreeSet<>();
+    @Getter
+    @Setter
+    private TheGadgetGrid view;
 
     public GadgetGrid(int rows, int columns) {
         this.rows = rows;

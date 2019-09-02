@@ -1,4 +1,4 @@
-package com.mygdx.game.view.services;
+package com.mygdx.game.services;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import lombok.Getter;
 
-//@Log
 public class RenderService {
     private static RenderService instance = null;
 
@@ -31,7 +30,6 @@ public class RenderService {
 
     public static RenderService getInstance() {
         if (instance == null) {
-            //log.log(Level.INFO, "RenderService instanced");
             instance = new RenderService();
         }
         return instance;

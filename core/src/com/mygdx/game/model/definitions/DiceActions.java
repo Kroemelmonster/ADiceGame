@@ -1,5 +1,6 @@
 package com.mygdx.game.model.definitions;
 
+import com.mygdx.game.controller.DiceController;
 import com.mygdx.game.model.entities.Dice;
 
 public class DiceActions {
@@ -9,14 +10,14 @@ public class DiceActions {
         DiceActions.ADD = new DiceAction() {
             @Override
             public boolean act(Dice dice) {
-                dice.setNumber(dice.getNumber() + 1);
+                DiceController.getInstance().increment(dice, 1);
                 return true;
             }
         };
         DiceActions.DISCARD = new DiceAction() {
             @Override
             public boolean act(Dice dice) {
-                dice.dispose();
+                DiceController.getInstance().dispose(dice);
                 return false;
             }
         };

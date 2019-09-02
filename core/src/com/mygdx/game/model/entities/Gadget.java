@@ -1,17 +1,28 @@
 package com.mygdx.game.model.entities;
 
-import com.mygdx.game.model.definitions.GadgetType;
+import com.mygdx.game.view.actors.GadgetActor;
 import lombok.Getter;
+import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 @Getter
-public class Gadget extends GadgetType implements Comparable<Gadget> {
+public class Gadget implements Comparable<Gadget> {
+    private GadgetType type;
+    private List<DiceSpot> spots = new ArrayList<>();
     private Integer row;
     private Integer col;
+    @Setter
+    private GadgetActor view;
 
     public Gadget(GadgetType type, int row, int col) {
-        super(type);
+        this.type = type;
         this.row = row;
         this.col = col;
+        type.forEachSpot(diceSpotType -> spots.add(new DiceSpot(diceSpotType, this)));
     }
 
     public void setPosition(int row, int col) {
@@ -26,5 +37,25 @@ public class Gadget extends GadgetType implements Comparable<Gadget> {
             compare = col.compareTo(other.col);
         }
         return compare;
+    }
+
+    public void forEachSpot(Consumer<? super DiceSpot> action) {
+        spots.forEach(action);
+    }
+
+    public List<Dice> getAllDice() {
+        return spots.stream().filter(DiceSpot::hasDice).map(DiceSpot::getDice).collect(Collectors.toList());
+    }
+
+    public void forEachDice(Consumer<? super Dice> action) {
+        spots.stream().filter(DiceSpot::hasDice).map(DiceSpot::getDice).forEach(action);
+    }
+
+    public boolean isFull() {
+        return spots.stream().allMatch(DiceSpot::hasDice);
+    }
+
+    public boolean isEmpty() {
+        return spots.stream().noneMatch(DiceSpot::hasDice);
     }
 }

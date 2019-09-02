@@ -3,9 +3,11 @@ package com.mygdx.game.controller;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.mygdx.game.model.definitions.PanTypes;
-import com.mygdx.game.view.actors.*;
-import com.mygdx.game.view.services.RenderService;
+import com.mygdx.game.services.RenderService;
+import com.mygdx.game.view.actors.PaddedPanel;
+import com.mygdx.game.view.actors.Panel;
+import com.mygdx.game.view.actors.TheGadgetGrid;
+import com.mygdx.game.view.actors.TheShaker;
 import lombok.Getter;
 
 public class LayerController {
@@ -21,8 +23,6 @@ public class LayerController {
     private Group diceLayer;
     @Getter
     private TheShaker theShaker;
-    @Getter
-    private TheDicePan theDicePan;
 
     private LayerController() {
     }
@@ -42,10 +42,6 @@ public class LayerController {
 
         theShaker = new TheShaker();
         bottomPanel.addActor(theShaker);
-
-        theDicePan = new TheDicePan(PanTypes.DEFAULT);
-        theDicePan.setX(400);
-        bottomPanel.addActor(theDicePan);
 
     }
 

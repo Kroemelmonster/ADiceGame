@@ -3,7 +3,7 @@ package com.mygdx.game.view.render;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
-import com.mygdx.game.view.services.Assets;
+import com.mygdx.game.view.definitions.Assets;
 import lombok.Getter;
 import lombok.Setter;
 

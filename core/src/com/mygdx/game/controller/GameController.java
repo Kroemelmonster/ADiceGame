@@ -2,11 +2,11 @@ package com.mygdx.game.controller;
 
 import com.mygdx.game.model.definitions.DiceActions;
 import com.mygdx.game.model.definitions.DiceRules;
+import com.mygdx.game.model.definitions.GadgetActions;
 import com.mygdx.game.model.definitions.GadgetTypes;
-import com.mygdx.game.model.definitions.PanTypes;
 import com.mygdx.game.model.entities.GadgetGrid;
 import com.mygdx.game.model.entities.Player;
-import com.mygdx.game.view.services.Assets;
+import com.mygdx.game.view.definitions.Assets;
 import lombok.Getter;
 
 public class GameController {
@@ -29,7 +29,7 @@ public class GameController {
 
         DiceRules.init();
         DiceActions.init();
-        PanTypes.init();
+        GadgetActions.init();
         GadgetTypes.init();
 
 

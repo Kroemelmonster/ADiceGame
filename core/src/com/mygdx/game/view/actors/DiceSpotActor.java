@@ -4,30 +4,36 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.game.model.entities.DiceSpot;
-import com.mygdx.game.view.services.RenderService;
-
-import java.util.Optional;
+import com.mygdx.game.model.entities.DiceSpotType;
+import com.mygdx.game.services.RenderService;
+import lombok.Getter;
 
 public class DiceSpotActor extends AbstractDiceActor {
+    @Getter
+    private DiceSpot model;
     private static Style style;
-    protected DiceSpot spot;
-    private Optional<DiceSpotTypeActor> content;
+    private DiceSpotTypeActor content;
 
     public DiceSpotActor(DiceSpot spot) {
         super();
+        model = spot;
+        model.setView(this);
         createStyle();
-        this.spot = spot;
 
         border.setColor(Color.BLACK);
 
         content = DiceSpotTypeActorBuilder.create(this);
-        content.ifPresent(diceSpotTypeActor -> addActor(diceSpotTypeActor.getActor()));
+        if (content != null) {
+            addActor(content.getActor());
+        }
 
         setColor(1, 1, 1, 0.2F);
 
 
-        int align = spot.getAlign();
-        float x = spot.getX() * getWidthWithPadding();
+        DiceSpotType type = spot.getType();
+
+        int align = type.getAlign();
+        float x = type.getX() * getWidthWithPadding();
         if (Align.isLeft(align)) {
             x += 2;
         } else if (Align.isRight(align)) {
@@ -36,7 +42,7 @@ public class DiceSpotActor extends AbstractDiceActor {
             x += style.paddingX / 2;
         }
 
-        float y = spot.getY() * getHeightWithPadding();
+        float y = type.getY() * getHeightWithPadding();
         y += style.offsetY;
         if (Align.isTop(align)) {
             y += style.paddingY / 2 - 2;
@@ -45,8 +51,12 @@ public class DiceSpotActor extends AbstractDiceActor {
         }
 
         setPosition(x, y);
+    }
 
-        //this.content.setColor(style.contentColor);
+    public void updateContent() {
+        if (content != null) {
+            content.updateContent(this);
+        }
     }
 
     private static void createStyle() {

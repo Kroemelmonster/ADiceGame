@@ -1,26 +1,26 @@
 package com.mygdx.game.model.entities;
 
-import com.mygdx.game.model.definitions.DiceRule;
-import lombok.AllArgsConstructor;
+import com.mygdx.game.view.actors.DiceSpotActor;
 import lombok.Getter;
+import lombok.Setter;
 
 
-@AllArgsConstructor
 @Getter
 public class DiceSpot {
-    protected float x;
-    protected float y;
-    protected int align;
-    private Type type;
+    private final DiceSpotType type;
+    private final Gadget gadget;
+    @Setter
+    private Dice dice;
 
-    private DiceRule diceRule;
-    public DiceSpot(DiceSpot spot) {
-        this.x = spot.x;
-        this.y = spot.y;
-        this.align = spot.align;
-        this.diceRule = spot.diceRule;
-        this.type = spot.type;
+    @Setter
+    private DiceSpotActor view;
+
+    public DiceSpot(DiceSpotType diceSpotType, Gadget gadget) {
+        type = diceSpotType;
+        this.gadget = gadget;
     }
 
-    public enum Type {NORMAL, DRAW}
+    public boolean hasDice() {
+        return dice != null;
+    }
 }

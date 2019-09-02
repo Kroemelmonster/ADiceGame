@@ -1,26 +1,20 @@
 package com.mygdx.game.view.actors;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mygdx.game.model.entities.Dice;
-import com.mygdx.game.view.actions.ArcToAction;
+import com.mygdx.game.services.DraggableService;
+import com.mygdx.game.services.RenderService;
 import com.mygdx.game.view.render.Draggable;
-import com.mygdx.game.view.services.DraggableService;
-import com.mygdx.game.view.services.RenderService;
 import lombok.Getter;
 
-import java.util.Observable;
-import java.util.Observer;
-
-public class DiceActor extends AbstractDiceActor implements Observer, Draggable {
+public class DiceActor extends AbstractDiceActor implements Draggable {
+    @Getter
+    private Dice model;
     private Style style;
     private Image content;
-    @Getter
-    private Dice dice;
     @Getter
     private float originalPositionY;
     @Getter
@@ -28,25 +22,24 @@ public class DiceActor extends AbstractDiceActor implements Observer, Draggable 
 
     public DiceActor(Dice dice) {
         super();
-        this.dice = dice;
+        model = dice;
+        model.setView(this);
         Skin skin = RenderService.getInstance().getSkin();
-        this.style = skin.get(Style.class);
-        this.border.setColor(Color.OLIVE);
-        this.content = addSubImage(null);
-        this.content.setColor(style.contentColor);
+        style = skin.get(Style.class);
+        border.setColor(Color.OLIVE);
+        content = addSubImage(null);
+        content.setColor(style.contentColor);
 
 
-        updateContent();
-
-        dice.addObserver(this);
+        updateContent(dice.getValue());
 
         DraggableService.getInstance().addDraggableDiceListener(this);
     }
 
     public void setPosition(float x, float y) {
         super.setPosition(x, y);
-        this.originalPositionX = this.getX();
-        this.originalPositionY = this.getY();
+        originalPositionX = getX();
+        originalPositionY = getY();
     }
 
     @Override
@@ -54,47 +47,9 @@ public class DiceActor extends AbstractDiceActor implements Observer, Draggable 
         return this;
     }
 
-    @Override
-    public void update(Observable observable, Object o) {
-        Dice.Change whatGotChanged = (Dice.Change) o;
-        switch (whatGotChanged) {
-            case number:
-                updateContent();
-                break;
-            case dispose:
-                dispose();
-                break;
-            case active:
-                updateActive();
-                break;
-        }
-    }
-
-    private void updateContent() {
+    public void updateContent(int value) {
         Skin skin = RenderService.getInstance().getSkin();
-        this.content.setDrawable(skin, style.dicePrefix + dice.getNumber());
-    }
-
-    private void updateActive() {
-        if (dice.isActive()) {
-            this.setTouchable(Touchable.enabled);
-        } else {
-            this.setTouchable(Touchable.disabled);
-        }
-    }
-
-    private void dispose() {
-        ArcToAction arcToAction = new ArcToAction();
-        arcToAction.setPosition(500, 50);
-        arcToAction.setDuration(1F);
-        arcToAction.setAlignment(1);
-        arcToAction.setInterpolation(Interpolation.pow2);
-        this.addAction(arcToAction);
-    }
-
-    public void updateNumber(Dice dice) {
-        Skin skin = RenderService.getInstance().getSkin();
-        content.setDrawable(skin, style.dicePrefix + dice.getNumber());
+        content.setDrawable(skin, style.dicePrefix + value);
     }
 
     private static class Style {

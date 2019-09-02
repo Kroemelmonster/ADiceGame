@@ -1,46 +1,37 @@
 package com.mygdx.game.model.entities;
 
-import com.mygdx.game.controller.DiceController;
+import com.mygdx.game.view.actors.DiceActor;
 import lombok.Getter;
-
-import java.util.Observable;
+import lombok.Setter;
 
 @Getter
-public class Dice extends Observable {
-    private int number;
+@Setter
+public class Dice {
+    private DiceActor view;
+    private int value;
     private boolean active = true;
 
-    public Dice(int number) {
-        this.number = number;
+    public Dice(int value) {
+        this.value = value;
     }
 
     public Dice() {
-        this.number = getNextRoll();
+        value = getNextRoll();
     }
 
     private int getNextRoll() {
         return (int) (Math.abs(Math.random() * 6F) + 1);
     }
 
-    public void setNumber(int number) {
-        this.number = number;
-        DiceController.getInstance().updateDiceNumber(this);
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-        setChanged();
-        notifyObservers(Change.active);
-    }
-
-    public void dispose() {
-        setChanged();
-        notifyObservers(Change.dispose);
-    }
-
     public void roll() {
-        setNumber(getNextRoll());
+        setValue(getNextRoll());
     }
 
-    public enum Change {number, dispose, active}
+    public int increment(int i) {
+        int incrementTo = Math.min(Math.max(i + value, 1), 6);
+        int overhead = (i + value) - incrementTo;
+        value = incrementTo;
+
+        return overhead;
+    }
 }

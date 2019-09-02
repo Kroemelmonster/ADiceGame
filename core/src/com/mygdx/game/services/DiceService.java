@@ -1,8 +1,5 @@
-package com.mygdx.game.model.services;
+package com.mygdx.game.services;
 
-import com.mygdx.game.model.definitions.DiceActions;
-import com.mygdx.game.model.definitions.DiceRules;
-import com.mygdx.game.model.definitions.PanTypes;
 import com.mygdx.game.model.entities.Dice;
 import com.mygdx.game.model.entities.Usable;
 
@@ -10,9 +7,6 @@ public class DiceService {
     private static DiceService instance = null;
 
     private DiceService() {
-        DiceRules.init();
-        DiceActions.init();
-        PanTypes.init();
     }
 
     public static DiceService getInstance() {
@@ -31,5 +25,9 @@ public class DiceService {
             return usable.use(dice);
         }
         return true;
+    }
+
+    public void increment(Dice dice, int i) {
+        int tooMuch = dice.increment(i);
     }
 }

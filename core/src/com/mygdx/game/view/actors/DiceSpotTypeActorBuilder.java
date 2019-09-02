@@ -1,21 +1,19 @@
 package com.mygdx.game.view.actors;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.mygdx.game.view.services.RenderService;
-
-import java.util.Optional;
+import com.mygdx.game.services.RenderService;
 
 public class DiceSpotTypeActorBuilder {
-    protected static Optional<DiceSpotTypeActor> create(DiceSpotActor spotActor) {
+    protected static DiceSpotTypeActor create(DiceSpotActor spotActor) {
         Skin skin = RenderService.getInstance().getSkin();
-        switch (spotActor.spot.getType()) {
+        switch (spotActor.getModel().getType().getCategory()) {
             case NORMAL:
-                return Optional.of(new NormalDiceSpotTypeActor(spotActor, skin));
+                return new NormalDiceSpotTypeActor(spotActor, skin);
             case DRAW:
-                return Optional.of(new DrawDiceSpotTypeActor(spotActor, skin));
+                return new DrawDiceSpotTypeActor(spotActor, skin);
             default:
                 // code block
         }
-        return Optional.empty();
+        return null;
     }
 }

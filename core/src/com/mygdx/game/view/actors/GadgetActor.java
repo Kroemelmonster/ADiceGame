@@ -4,9 +4,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.mygdx.game.model.entities.DiceSpot;
 import com.mygdx.game.model.entities.Gadget;
-import com.mygdx.game.view.services.RenderService;
+import com.mygdx.game.services.RenderService;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,25 +14,30 @@ import java.util.List;
 public class GadgetActor extends Group {
     private Image background;
     private List<DiceSpotActor> spots = new ArrayList<>();
+    @Getter
+    private Gadget model;
 
     public GadgetActor(TheGadgetGrid grid, Gadget gadget) {
+        model = gadget;
+        model.setView(this);
+
         Style style = RenderService.getInstance().getSkin().get(Style.class);
         background = new Image(style.background);
         addActor(background);
 
-        for (DiceSpot spot : gadget.getSpots()) {
-            DiceSpotActor spotActor = new DiceSpotActor(spot);
+        gadget.forEachSpot(diceSpot -> {
+            DiceSpotActor spotActor = new DiceSpotActor(diceSpot);
             addActor(spotActor);
             spots.add(spotActor);
-        }
+        });
 
         float diceWidth = DiceSpotActor.getDiceWidth();
         float diceHeight = DiceSpotActor.getDiceHeight();
-        float height = gadget.getHeight() * diceHeight;
+        float height = gadget.getType().getHeight() * diceHeight;
         setBounds(
                 gadget.getCol() * diceWidth,
                 grid.getHeight() - gadget.getRow() * diceHeight - height,
-                gadget.getWidth() * diceWidth,
+                gadget.getType().getWidth() * diceWidth,
                 height
         );
         background.setBounds(2, 2, getWidth() - 4, getHeight() - 4);

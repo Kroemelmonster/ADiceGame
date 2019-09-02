@@ -9,14 +9,14 @@ public class DiceRules {
         DiceRules.EVEN = new DiceRule() {
             @Override
             public boolean check(Dice dice) {
-                return isEven(dice.getNumber());
+                return isEven(dice.getValue());
             }
         };
 
         DiceRules.ODD = new DiceRule() {
             @Override
             public boolean check(Dice dice) {
-                return !isEven(dice.getNumber());
+                return !isEven(dice.getValue());
             }
         };
     }

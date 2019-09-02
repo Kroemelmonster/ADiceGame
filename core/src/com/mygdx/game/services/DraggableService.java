@@ -1,7 +1,6 @@
-package com.mygdx.game.view.services;
+package com.mygdx.game.services;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.mygdx.game.model.services.DiceService;
 import com.mygdx.game.view.actors.DiceActor;
 import com.mygdx.game.view.actors.UsableActor;
 import com.mygdx.game.view.render.DraggableListener;
@@ -25,9 +24,9 @@ public class DraggableService {
                 DiceActor dice = (DiceActor) drag;
                 UsableActor usable = (UsableActor) over;
 
-                boolean isUsable = DiceService.getInstance().isUsable(dice.getDice(), usable.getUsable());
+                // boolean isUsable = DiceService.getInstance().isUsable(dice.getDice(), usable.getUsable());
 
-                usable.enableDragOver(isUsable);
+                // usable.enableDragOver(isUsable);
             }
 
             @Override
@@ -50,7 +49,8 @@ public class DraggableService {
                 DiceActor dice = (DiceActor) drag;
                 UsableActor usable = (UsableActor) drop;
 
-                return DiceService.getInstance().useUsable(dice.getDice(), usable.getUsable());
+                return true;
+                // return DiceService.getInstance().useUsable(dice.getDice(), usable.getUsable());
             }
         };
     }

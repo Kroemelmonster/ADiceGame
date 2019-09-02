@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.mygdx.game.controller.DiceController;
-import com.mygdx.game.view.services.RenderService;
+import com.mygdx.game.services.RenderService;
 
 public class TheShaker extends Group {
     private final Image background;

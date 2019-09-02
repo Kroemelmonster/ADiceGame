@@ -2,7 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.mygdx.game.controller.GameController;
-import com.mygdx.game.view.services.RenderService;
+import com.mygdx.game.services.RenderService;
 
 public class MyGdxGame extends ApplicationAdapter {
     private RenderService renderService;
