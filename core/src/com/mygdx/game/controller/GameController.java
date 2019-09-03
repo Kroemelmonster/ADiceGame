@@ -1,6 +1,5 @@
 package com.mygdx.game.controller;
 
-import com.mygdx.game.model.definitions.DiceActions;
 import com.mygdx.game.model.definitions.DiceRules;
 import com.mygdx.game.model.definitions.GadgetActions;
 import com.mygdx.game.model.definitions.GadgetTypes;
@@ -28,7 +27,6 @@ public class GameController {
         Assets.init();
 
         DiceRules.init();
-        DiceActions.init();
         GadgetActions.init();
         GadgetTypes.init();
 

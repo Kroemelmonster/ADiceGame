@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.game.view.actions.AfterAction;
 
 public class ActionService {
     private static ActionService instance = null;
@@ -19,6 +18,18 @@ public class ActionService {
             instance = new ActionService();
         }
         return instance;
+    }
+
+    private void finishAction(Action action) {
+        if (action instanceof ParallelAction) {
+            ParallelAction parallelAction = (ParallelAction) action;
+
+            for (Action innerAction : new Array.ArrayIterator<>(parallelAction.getActions())) {
+                finishAction(innerAction);
+            }
+        } else {
+            action.act(1000F);
+        }
     }
 
     private float getRemainingDurationRec(Action action) {
@@ -56,29 +67,34 @@ public class ActionService {
         return getRemainingDurationRec(action);
     }
 
-    public void addAction(Actor actor, Action action) {
-        addAction(actor, action, null);
-    }
-
-    public void addAction(Actor actor, Action action, AfterAction afterAction) {
-        SequenceAction sequenceAction;
+    private SequenceAction getActorSequenceAction(Actor actor) {
         if (actor.getActions().size == 1) {
             // TODO what if that doesnt not work ? ... whatever
-            sequenceAction = (SequenceAction) actor.getActions().get(0);
-        } else {
+            return (SequenceAction) actor.getActions().get(0);
+        }
+        return null;
+    }
+
+    public void addAction(Actor actor, Action action) {
+        SequenceAction sequenceAction = getActorSequenceAction(actor);
+        if (sequenceAction == null) {
             sequenceAction = new SequenceAction();
             actor.addAction(sequenceAction);
         }
 
         sequenceAction.addAction(action);
+    }
 
-        if (afterAction != null) {
-            sequenceAction.addAction(new Action() {
-                public boolean act(float delta) {
-                    afterAction.afterAction();
-                    return true;
-                }
-            });
+
+    public void reset(Actor actor) {
+        SequenceAction sequenceAction = getActorSequenceAction(actor);
+        if (sequenceAction == null) {
+            return;
         }
+        float savedX = actor.getX();
+        float savedY = actor.getY();
+        finishAction(sequenceAction);
+
+        actor.setPosition(savedX, savedY);
     }
 }

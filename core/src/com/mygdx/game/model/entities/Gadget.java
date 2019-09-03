@@ -1,5 +1,6 @@
 package com.mygdx.game.model.entities;
 
+import com.google.common.collect.ImmutableList;
 import com.mygdx.game.view.actors.GadgetActor;
 import lombok.Getter;
 import lombok.Setter;
@@ -41,6 +42,10 @@ public class Gadget implements Comparable<Gadget> {
 
     public void forEachSpot(Consumer<? super DiceSpot> action) {
         spots.forEach(action);
+    }
+
+    public List<DiceSpot> getSpots() {
+        return ImmutableList.copyOf(spots);
     }
 
     public List<Dice> getAllDice() {

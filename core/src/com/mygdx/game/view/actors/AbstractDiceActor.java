@@ -1,13 +1,16 @@
 package com.mygdx.game.view.actors;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.game.services.RenderService;
 
 public abstract class AbstractDiceActor extends Group {
+    protected Group innerGroup;
+
     protected Image background;
     protected Image border;
 
@@ -16,13 +19,16 @@ public abstract class AbstractDiceActor extends Group {
     public AbstractDiceActor() {
         super();
         createStyle();
-        Skin skin = RenderService.getInstance().getSkin();
+        innerGroup = new Group();
+        innerGroup.setTouchable(Touchable.disabled);
+        addActor(innerGroup);
+
         setWidth(style.size);
         setHeight(style.size);
         setOrigin(Align.center);
 
-        this.background = addSubImage(style.background);
-        this.border = addSubImage(style.border);
+        background = addSubImage(style.background);
+        border = addSubImage(style.border);
     }
 
     private static void createStyle() {
@@ -49,8 +55,12 @@ public abstract class AbstractDiceActor extends Group {
         }
         image.setWidth(style.size);
         image.setHeight(style.size);
-        this.addActor(image);
+        addSubActor(image);
         return image;
+    }
+
+    protected void addSubActor(Actor actor) {
+        innerGroup.addActor(actor);
     }
 
     private static class Style {

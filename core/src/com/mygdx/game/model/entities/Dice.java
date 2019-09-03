@@ -10,6 +10,7 @@ public class Dice {
     private DiceActor view;
     private int value;
     private boolean active = true;
+    private DiceSpot spot;
 
     public Dice(int value) {
         this.value = value;

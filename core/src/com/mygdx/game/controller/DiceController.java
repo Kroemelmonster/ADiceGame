@@ -28,18 +28,15 @@ public class DiceController {
 
 
     public void init() {
-        RollDiceController.getInstance().updateTargets();
+        DrawDiceController.getInstance().updateTargets();
     }
 
     public void draw() {
-        RollDiceController.getInstance().rollNewDice();
+        DrawDiceController.getInstance().drawDice();
     }
 
     public void increment(Dice dice, int i) {
         DiceService.getInstance().increment(dice, i);
         DiceActionService.getInstance().addPopAction(dice, dice.getValue());
-    }
-
-    public void dispose(Dice dice) {
     }
 }

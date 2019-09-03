@@ -3,16 +3,19 @@ package com.mygdx.game.view.actors;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
+import com.mygdx.game.controller.DiceSpotController;
 import com.mygdx.game.model.entities.DiceSpot;
 import com.mygdx.game.model.entities.DiceSpotType;
 import com.mygdx.game.services.RenderService;
+import com.mygdx.game.view.render.DiceDroppable;
 import lombok.Getter;
 
-public class DiceSpotActor extends AbstractDiceActor {
+public class DiceSpotActor extends AbstractDiceActor implements DiceDroppable {
     @Getter
     private DiceSpot model;
     private static Style style;
     private DiceSpotTypeActor content;
+    private DiceActor previewDiceActor;
 
     public DiceSpotActor(DiceSpot spot) {
         super();
@@ -20,14 +23,13 @@ public class DiceSpotActor extends AbstractDiceActor {
         model.setView(this);
         createStyle();
 
+        innerGroup.setColor(1, 1, 1, 0.25F);
         border.setColor(Color.BLACK);
 
         content = DiceSpotTypeActorBuilder.create(this);
         if (content != null) {
-            addActor(content.getActor());
+            addSubActor(content.getActor());
         }
-
-        setColor(1, 1, 1, 0.2F);
 
 
         DiceSpotType type = spot.getType();
@@ -87,6 +89,30 @@ public class DiceSpotActor extends AbstractDiceActor {
 
     public Vector2 getPosition() {
         return localToStageCoordinates(new Vector2());
+    }
+
+    public void showDragOver(DiceActor diceActor, boolean accept) {
+        previewDiceActor = diceActor.createHighlightCopy(accept);
+        addActor(previewDiceActor);
+    }
+
+    public void hideDragOver() {
+        removeActor(previewDiceActor);
+    }
+
+    @Override
+    public void dragOverStart(DiceActor diceActor) {
+        DiceSpotController.getInstance().dragOverStart(diceActor, this);
+    }
+
+    @Override
+    public void dragOverEnd(DiceActor diceActor) {
+        DiceSpotController.getInstance().dragOverEnd(this);
+    }
+
+    @Override
+    public boolean drop(DiceActor diceActor) {
+        return DiceSpotController.getInstance().drop(diceActor, this);
     }
 
     private static class Style {
